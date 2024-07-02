@@ -34,5 +34,13 @@
 		"vite": "^5.0.3"
 	},
 	"type": "module",
-	"packageManager": "pnpm@9.3.0+sha512.ee7b93e0c2bd11409c6424f92b866f31d3ea1bef5fbe47d3c7500cdc3c9668833d2e55681ad66df5b640c61fa9dc25d546efa54d76d7f8bf54b13614ac293631"
+	"packageManager": "pnpm@9.3.0+sha512.ee7b93e0c2bd11409c6424f92b866f31d3ea1bef5fbe47d3c7500cdc3c9668833d2e55681ad66df5b640c61fa9dc25d546efa54d76d7f8bf54b13614ac293631",
+	"dependencies": {
+		"@iconify/svelte": "^4.0.2",
+		"bits-ui": "^0.21.11",
+		"clsx": "^2.1.1",
+		"g4f": "^1.4.5",
+		"tailwind-merge": "^2.3.0",
+		"tailwind-variants": "^0.2.1"
+	}
 }
