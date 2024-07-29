@@ -1,3 +1,4 @@
+import { supabase } from '$lib/supabaseClient.js';
 import { json } from '@sveltejs/kit';
 import { G4F } from 'g4f';
 const g4f = new G4F();
@@ -5,8 +6,7 @@ const g4f = new G4F();
 const messages = [
 	{
 		role: 'system',
-		content:
-			'You are the best software engineer that ever born once in a generation with 30 years of experience'
+		content: ''
 	}
 ];
 const options = {
@@ -17,9 +17,30 @@ const options = {
 	}
 };
 
-export async function POST({request}) {
-    const body = await request.json();
-    messages.push({ role: 'user', content: body.question });
+export async function POST({ request }) {
+	const body = await request.json();
+	messages.push({ role: 'user', content: body.question });
 	const response = await g4f.chatCompletion(messages, options);
+	
+	if (!body.chatId) {
+		const { data } = await supabase
+			.from('chats')
+			.insert([{ userId: body.userId, title: body.question }])
+			.select();
+		if (data) {
+			const chatId = data[0].id;
+			await supabase
+				.from('messages')
+				.insert([{ chatId, question: body.question, answer: response }]);
+		}
+	} else {
+		const { data } = await supabase.from('chats').select().eq('id', body.chatId);
+		if (data) {
+			await supabase
+				.from('messages')
+				.insert([{ chatId: body.chatId, question: body.question, answer: response }]);
+		}
+	}
+
 	return json(response);
 }
